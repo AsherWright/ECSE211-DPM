@@ -1,6 +1,6 @@
 package wallFollower;
 import lejos.hardware.motor.*;
-
+//Comment here to test git
 public class BangBangController implements UltrasonicController{
 	private final int bandCenter, bandwidth;
 	private final int motorLow, motorHigh;
