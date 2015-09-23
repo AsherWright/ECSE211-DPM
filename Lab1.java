@@ -13,7 +13,7 @@ import lejos.hardware.Button;
 // This is the main class for the wall follower.
 
 public class Lab1 {
-
+//hey
 // Parameters: adjust these for desired performance
 
 	private static final int bandCenter = 20;			// Offset from the wall (cm)
