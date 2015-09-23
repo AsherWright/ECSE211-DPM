@@ -4,7 +4,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 
 /*
- * Odometer.java
+ * Odometer.java :)
  */
 public class Odometer extends Thread {
 	// robot position
