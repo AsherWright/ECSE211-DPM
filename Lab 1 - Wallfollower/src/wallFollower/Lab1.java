@@ -1,3 +1,4 @@
+package wallFollower;
 
 //TEST COMMENT
 import lejos.hardware.sensor.*;

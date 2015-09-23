@@ -1,3 +1,4 @@
+package odometry;
 // Lab2.java
 
 import lejos.hardware.Button;

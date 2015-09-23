@@ -1,10 +1,11 @@
+package odometry;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 
 /*
- * Odometer.java :)
+ * Odometer.java
  */
 public class Odometer extends Thread {
 	// robot position
