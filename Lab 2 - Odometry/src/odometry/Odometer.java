@@ -77,9 +77,10 @@ public class Odometer extends Thread {
 			
 			double changeInCenterArclength = (arcLengthR + arcLengthL)/2;
 			
-			double deltaX = changeInCenterArclength*Math.cos((theta + theta + changeInTheta)/2);
-			double deltaY = changeInCenterArclength*Math.sin((theta + theta + changeInTheta)/2);
+
 			synchronized (lock) {
+				double deltaX = changeInCenterArclength*Math.cos((theta + theta + changeInTheta)/2);
+				double deltaY = changeInCenterArclength*Math.sin((theta + theta + changeInTheta)/2);
 				// don't use the variables x, y, or theta anywhere but here!
 				theta += changeInTheta;
 				x +=deltaX;

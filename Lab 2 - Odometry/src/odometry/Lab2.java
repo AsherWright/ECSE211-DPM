@@ -18,7 +18,7 @@ public class Lab2 {
 
 	// Constants
 	public static final double WHEEL_RADIUS = 2.15;
-	public static final double TRACK = 17.42;
+	public static final double TRACK = 17.95;
 
 	public static void main(String[] args) {
 		int buttonChoice;
