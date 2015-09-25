@@ -19,10 +19,7 @@ public class OdometryCorrection extends Thread {
 			correctionStart = System.currentTimeMillis();
 
 			// put your correction code here
-			
-			//basically, if we see a black line, update our position to be the nearest 15 + 30k for Y and X?
-			//we check to see if we're increasing Y --> update Y. increasing X --> update X?
-			
+
 			// this ensure the odometry correction occurs only once every period
 			correctionEnd = System.currentTimeMillis();
 			if (correctionEnd - correctionStart < CORRECTION_PERIOD) {

@@ -1,5 +1,8 @@
 package odometry;
+import lejos.hardware.ev3.LocalEV3;
+import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.port.MotorPort;
 
 /*
  * Odometer.java
@@ -72,12 +75,12 @@ public class Odometer extends Thread {
 			
 			double changeInTheta = (arcLengthR - arcLengthL)/wheelTrack;
 			
-			double changeInCenterArclength = (arcLengthR + arcLengthL)/2.0;
+			double changeInCenterArclength = (arcLengthR + arcLengthL)/2;
 			
 
 			synchronized (lock) {
-				double deltaX = changeInCenterArclength*Math.cos((theta + theta + changeInTheta)/2.0);
-				double deltaY = changeInCenterArclength*Math.sin((theta + theta + changeInTheta)/2.0);
+				double deltaX = changeInCenterArclength*Math.cos((theta + theta + changeInTheta)/2);
+				double deltaY = changeInCenterArclength*Math.sin((theta + theta + changeInTheta)/2);
 				// don't use the variables x, y, or theta anywhere but here!
 				theta += changeInTheta;
 				x +=deltaX;

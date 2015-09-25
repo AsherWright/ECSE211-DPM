@@ -32,7 +32,7 @@ public class Lab2 {
 		Odometer odometer = new Odometer(WHEEL_RADIUS, TRACK, leftMotor, rightMotor);
 		OdometryDisplay odometryDisplay = new OdometryDisplay(odometer,t);
 		OdometryCorrection odometryCorrection = new OdometryCorrection(odometer);
-		colorSensor.getRGBMode();
+
 		do {
 			// clear the display
 			t.clear();

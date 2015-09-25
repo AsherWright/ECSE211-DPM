@@ -17,8 +17,7 @@ public class Lab2 {
 	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	//private static final EV3ColorSensor colorSensor = new EV3ColorSensor(LocalEV3.get().getPort("B"));
-	private static final EV3ColorSensor colorSensor = new EV3ColorSensor(LocalEV3.get().getPort("S2"));
-	
+	private static final Port colorSensor = LocalEV3.get().getPort("S2");
 	//Constants
 	public static final double WHEEL_RADIUS = 2.15;
 	public static final double TRACK = 17.95;
@@ -32,7 +31,7 @@ public class Lab2 {
 		Odometer odometer = new Odometer(WHEEL_RADIUS, TRACK, leftMotor, rightMotor);
 		OdometryDisplay odometryDisplay = new OdometryDisplay(odometer,t);
 		OdometryCorrection odometryCorrection = new OdometryCorrection(odometer);
-		colorSensor.getRGBMode();
+
 		do {
 			// clear the display
 			t.clear();
