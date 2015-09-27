@@ -5,15 +5,15 @@ package odometry;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 public class SquareDriver {
-	private static final int FORWARD_SPEED = 250;
-	private static final int ROTATE_SPEED = 150;
+	private static final int FORWARD_SPEED = 150;
+	private static final int ROTATE_SPEED = 100;
 
 	public static void drive(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor,
 			double leftRadius, double rightRadius, double width) {
 		// reset the motors
 		for (EV3LargeRegulatedMotor motor : new EV3LargeRegulatedMotor[] { leftMotor, rightMotor }) {
 			motor.stop();
-			motor.setAcceleration(3000);
+			motor.setAcceleration(600);
 		}
 
 		// wait 5 seconds

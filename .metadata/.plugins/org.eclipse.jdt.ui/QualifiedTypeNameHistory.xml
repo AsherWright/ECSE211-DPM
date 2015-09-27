@@ -2,7 +2,11 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="lejos.hardware.lcd.TextLCD"/>
 <fullyQualifiedTypeName name="lejos.hardware.motor.EV3LargeRegulatedMotor"/>
-<fullyQualifiedTypeName name="lejos.hardware.ev3.LocalEV3"/>
 <fullyQualifiedTypeName name="lejos.hardware.port.MotorPort"/>
+<fullyQualifiedTypeName name="lejos.hardware.ev3.LocalEV3"/>
+<fullyQualifiedTypeName name="lejos.hardware.sensor.EV3ColorSensor"/>
+<fullyQualifiedTypeName name="lejos.hardware.sensor.SensorMode"/>
+<fullyQualifiedTypeName name="lejos.robotics.Color"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
+<fullyQualifiedTypeName name="lejos.hardware.Sound"/>
 </qualifiedTypeNameHistroy>
