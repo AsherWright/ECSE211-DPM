@@ -1,0 +1,5 @@
+1443536499049	Rename local variable 'nearestTheta'
+1443536571614	Rename local variable 'nearestRightTheta'
+1443536855246	Rename method 'findNearestTheta'
+1443536867864	Rename method 'findRobotDirection'
+1443537289608	Rename local variable 'changeInCenterArclength'

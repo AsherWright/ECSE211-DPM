@@ -14,6 +14,7 @@ public class Odometer extends Thread {
 	
 	public static int nowTachoL;// Current tacho L 
 	public static int nowTachoR;// Current tacho R
+	//robot physical information
 	public static double wheelRadius;
 	public static double wheelTrack;
 	static EV3LargeRegulatedMotor motorL;  // L 
@@ -47,38 +48,43 @@ public class Odometer extends Thread {
 		lastTachoL = motorL.getTachoCount();
 		lastTachoR = motorR.getTachoCount();
 		
+		//the changes in the tacho meters (in degrees and radians)
 		int changeLeftTacho;
 		int changeRightTacho;
 		double changeRadLeft;
 		double changeRadRight;
 		while (true) {
 			updateStart = System.currentTimeMillis();
-			// put (some of) your odometer code here
+			// get the current tacho count.
 			nowTachoL = motorL.getTachoCount();
 			nowTachoR = motorR.getTachoCount();
 			
-			
+			//find the change in tacho count for each motor (in degrees and radians)
 			changeLeftTacho = nowTachoL - lastTachoL;
 			changeRadLeft = changeLeftTacho*2.0*Math.PI/360.0;
 			changeRightTacho = nowTachoR - lastTachoR;
 			changeRadRight = changeRightTacho*2.0*Math.PI/360.0;
 			
+			//set our last tacho to this current one (for next time in loop)
 			lastTachoL = nowTachoL;
 			lastTachoR = nowTachoR;
 			
+			//get the arclengths
 			double arcLengthL = wheelRadius*changeRadLeft;
 			double arcLengthR = wheelRadius*changeRadRight;
 			
-			
+			//find the change in theta (using formula from slides).
 			double changeInTheta = 	(arcLengthR - arcLengthL)/wheelTrack;
 			
-			double changeInCenterArclength = (arcLengthR + arcLengthL)/2.0;
+			//calculate the center arclength.
+			double deltaCenterArclength = (arcLengthR + arcLengthL)/2.0;
 			
-
+			//in lock so we don't change x,y,theta anywhere else.
 			synchronized (lock) {
-				double deltaX = changeInCenterArclength*Math.cos((theta + theta + changeInTheta)/2.0);
-				double deltaY = changeInCenterArclength*Math.sin((theta + theta + changeInTheta)/2.0);
-				// don't use the variables x, y, or theta anywhere but here!
+				//calculate the change in the X and in Y (using formula).
+				double deltaX = deltaCenterArclength*Math.cos((theta + theta + changeInTheta)/2.0);
+				double deltaY = deltaCenterArclength*Math.sin((theta + theta + changeInTheta)/2.0);
+				//update theta, x, y. Theta will be in radians here, but displayed in degrees.
 				theta += changeInTheta;
 				x +=deltaX;
 				y +=deltaY;
@@ -131,11 +137,12 @@ public class Odometer extends Thread {
 
 		return result;
 	}
-
+	//gets theta, but returns in degrees rather than radians.
 	public double getTheta() {
 		double result;
 		
 		synchronized (lock) {
+	
 		result = theta*360.0/(2.0*Math.PI);
 		
 			if(result >= 360){
