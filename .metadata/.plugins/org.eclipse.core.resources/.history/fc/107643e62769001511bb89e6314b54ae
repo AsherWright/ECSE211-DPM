@@ -1,0 +1,13 @@
+
+public class Position {
+	private int x;
+	private int y;
+	private int theta;
+	
+	public Position(int x, int y, double theta){
+		
+	}
+	public getX(){
+		
+	}
+}

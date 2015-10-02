@@ -118,7 +118,11 @@ public class Odometer extends Thread {
 				position[2] = getTheta();
 		}
 	}
-
+	public Position getPositionObject(){
+		synchronized (lock) {
+			return new Position(getX(), getY() ,getTheta());
+		}
+	}
 	public double getX() {
 		double result;
 

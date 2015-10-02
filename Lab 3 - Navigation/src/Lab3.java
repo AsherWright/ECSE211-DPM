@@ -23,12 +23,20 @@ public class Lab3 {
 			int buttonChoice;
 
 			// some objects that need to be instantiated
-			
+			Position[] positions = new Position[2];
+			positions[0] = new Position(60,30,180);
+			positions[1] = new Position(10,50,90);
+			positions[2] = new Position(60,60,0);
 			final TextLCD t = LocalEV3.get().getTextLCD();
 			Odometer odometer = new Odometer(WHEEL_RADIUS, TRACK, leftMotor, rightMotor);
+			final Driver robotDriver = new Driver(odometer, leftMotor, rightMotor, WHEEL_RADIUS, WHEEL_RADIUS, TRACK, positions);
 			OdometryCorrection odometryCorrection = new OdometryCorrection(odometer, colorSensor);
 			OdometryDisplay odometryDisplay = new OdometryDisplay(odometer,odometryCorrection,t);
-
+			
+			
+			Position toTravelto = new Position(60,30,0);
+			Position currPos = odometer.getPositionObject();
+			
 			
 			do {
 				// clear the display
@@ -38,8 +46,8 @@ public class Lab3 {
 				t.drawString("< Left | Right >", 0, 0);
 				t.drawString("       |        ", 0, 1);
 				t.drawString(" Float | Drive  ", 0, 2);
-				t.drawString("motors | in a   ", 0, 3);
-				t.drawString("       | square ", 0, 4);
+				t.drawString("motors | to a   ", 0, 3);
+				t.drawString("       |  spot  ", 0, 4);
 
 				buttonChoice = Button.waitForAnyPress();
 			} while (buttonChoice != Button.ID_LEFT
@@ -61,14 +69,15 @@ public class Lab3 {
 				
 				odometer.start();
 				odometryDisplay.start();
-				odometryCorrection.start();
+				//odometryCorrection.start();
+				robotDriver.start();
 				
 				// spawn a new Thread to avoid SquareDriver.drive() from blocking
-				(new Thread() {
+			/*	(new Thread() {
 					public void run() {
-						SquareDriver.drive(leftMotor, rightMotor, WHEEL_RADIUS, WHEEL_RADIUS, TRACK);
+						robotDriver.driveToPosition(new Position(60,30,180));
 					}
-				}).start();
+			 	}).start();*/
 			}
 			
 			while (Button.waitForAnyPress() != Button.ID_ESCAPE);
