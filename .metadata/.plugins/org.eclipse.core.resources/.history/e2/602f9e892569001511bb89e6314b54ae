@@ -1,5 +1,7 @@
 package odometry;
-
+/*
+ * OdometryDisplay.java
+ */
 
 import lejos.hardware.lcd.TextLCD;
 

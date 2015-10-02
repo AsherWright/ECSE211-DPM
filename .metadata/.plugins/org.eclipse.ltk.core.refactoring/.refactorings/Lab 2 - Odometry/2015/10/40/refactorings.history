@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 4 elements to &apos;Lab 3 - Navigation/src/(default package)&apos;&#x0A;- Original project: &apos;Lab 2 - Odometry&apos;&#x0A;- Destination element: &apos;Lab 3 - Navigation/src/(default package)&apos;&#x0A;- Original elements:&#x0A;     odometry.OdometryDisplay.java&#x0A;     odometry.OdometryCorrection.java&#x0A;     odometry.SquareDriver.java&#x0A;     odometry.Odometer.java" description="Copy compilation units" destination="=Lab 3 - Navigation/src&lt;" element1="/src&lt;odometry{OdometryDisplay.java" element2="/src&lt;odometry{OdometryCorrection.java" element3="/src&lt;odometry{SquareDriver.java" element4="/src&lt;odometry{Odometer.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1443804574307" units="4" version="1.0"/>
+</session>
