@@ -23,7 +23,7 @@ public class Lab3 {
 			int buttonChoice;
 
 			// some objects that need to be instantiated
-			Position[] positions = new Position[3];
+			Position[] positions = new Position[2];
 			positions[0] = new Position(60,30,180);
 			positions[1] = new Position(10,50,90);
 			positions[2] = new Position(60,60,0);

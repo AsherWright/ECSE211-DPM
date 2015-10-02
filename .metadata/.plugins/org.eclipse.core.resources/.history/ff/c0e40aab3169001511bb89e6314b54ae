@@ -58,7 +58,7 @@ public class Driver extends Thread{
 		}else if(thetaToRotate < -180){
 			thetaToRotate = thetaToRotate+360.0;
 		}
-		System.out.println("we want to rotate: " + thetaToRotate);
+		
 		leftMotor.setSpeed(ROTATE_SPEED);
 		rightMotor.setSpeed(ROTATE_SPEED);
 		leftMotor.rotate(-convertAngle(leftRadius, width, thetaToRotate), true);
@@ -70,10 +70,10 @@ public class Driver extends Thread{
 		rightMotor.rotate(convertDistance(rightRadius, hypotenuse), false);
 		
 
-		//leftMotor.setSpeed(ROTATE_SPEED);
-		//rightMotor.setSpeed(ROTATE_SPEED);
-		//leftMotor.rotate(-convertAngle(leftRadius, width, finalPos.getTheta() -thetaToRotate), true);
-		//rightMotor.rotate(convertAngle(rightRadius, width, finalPos.getTheta() -thetaToRotate), false);
+		leftMotor.setSpeed(ROTATE_SPEED);
+		rightMotor.setSpeed(ROTATE_SPEED);
+		leftMotor.rotate(-convertAngle(leftRadius, width, finalPos.getTheta() -thetaToRotate), true);
+		rightMotor.rotate(convertAngle(rightRadius, width, finalPos.getTheta() -thetaToRotate), false);
 	}
 	//Conversion methods.
 	private static int convertDistance(double radius, double distance) {

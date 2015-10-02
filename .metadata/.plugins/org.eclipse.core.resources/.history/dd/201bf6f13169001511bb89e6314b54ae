@@ -58,7 +58,7 @@ public class Driver extends Thread{
 		}else if(thetaToRotate < -180){
 			thetaToRotate = thetaToRotate+360.0;
 		}
-		System.out.println("we want to rotate: " + thetaToRotate);
+		
 		leftMotor.setSpeed(ROTATE_SPEED);
 		rightMotor.setSpeed(ROTATE_SPEED);
 		leftMotor.rotate(-convertAngle(leftRadius, width, thetaToRotate), true);
