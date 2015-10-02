@@ -9,4 +9,5 @@
 <fullyQualifiedTypeName name="lejos.robotics.Color"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="lejos.hardware.Sound"/>
+<fullyQualifiedTypeName name="lejos.hardware.sensor.EV3UltrasonicSensor"/>
 </qualifiedTypeNameHistroy>

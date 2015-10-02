@@ -60,7 +60,7 @@ public class SquareDriver {
 			rightMotor.setSpeed(FORWARD_SPEED);
 
 			leftMotor.rotate(convertDistance(leftRadius, 60.96), true); //two tiles = 60.96
-			rightMotor.rotate(convertDistance(rightRadius, 60.96), false);
+			rightMotor.rotate(convertDistance(rightRadius, 30.98), false);
 
 			// turn 90 degrees clockwise
 			leftMotor.setSpeed(ROTATE_SPEED);
