@@ -1,0 +1,100 @@
+while(reachedPoint == false){
+					if(sensorDistance < 50 && blockHasNotBeenMarked){
+						xBlock = 50*Math.cos(newTheta*2*Math.PI/360.0);
+						yBlock = 50*Math.sin(newTheta*2*Math.PI/360.0);
+						blockHasNotBeenMarked = false;
+						blockToFinish = Math.sqrt(Math.pow((finalPos.getX()-xBlock), 2) + Math.pow((finalPos.getY()-yBlock), 2));
+					}
+					meToFinish = Math.sqrt(Math.pow((finalPos.getX()-odo.getX()), 2) + Math.pow((finalPos.getY()-odo.getY()), 2));
+					if(sensorDistance < 15){
+						double leftSpeed = 50 + 1800/sensorDistance;
+						double rightSpeed = 50 - 1800/sensorDistance;
+						if(rightSpeed < 0){
+							rightMotor.setSpeed((int) rightSpeed);
+							rightMotor.backward();
+						}else{
+							rightMotor.setSpeed((int) rightSpeed);
+							rightMotor.forward();
+						}
+						leftMotor.setSpeed((int) leftSpeed);
+						leftMotor.forward();
+						
+						avoidedWall = true;
+						//Sound.beep();
+					}else{
+						//do this only if on track.
+						//First, see if we are on track. If so, do what is below
+						double correctYPos = deltaY/deltaX*(odo.getX()-firstPosition.getX()) + firstPosition.getY();
+						double yError = correctYPos - odo.getY();
+						double thetaError = newTheta - odo.getTheta();
+						//we're on track
+						if(Math.abs(yError) < 0.4){
+							if(Math.abs(thetaError) < 4){
+								leftMotor.setSpeed(150);
+								rightMotor.setSpeed(150);
+								leftMotor.forward();
+								rightMotor.forward();	
+							}else{ //need to then adjust theta.
+								leftMotor.setSpeed(50);
+								rightMotor.setSpeed(50);
+								leftMotor.rotate(-convertAngle(leftRadius, width, thetaError), true);
+								rightMotor.rotate(convertAngle(rightRadius, width, thetaError), false);
+							}
+							
+						}else if (yError < 0){ //we're off track to the 
+							//do something p-controller-esque.OR just try to get to a position that is back on the line...
+							//the second option may be safer... so just barely go around the wall or something.
+							
+							leftMotor.setSpeed(150);
+							rightMotor.setSpeed(50);
+							leftMotor.forward();
+							rightMotor.forward();
+							
+						}else if (yError > 0){
+							if(avoidedWall){
+								try { Thread.sleep(100); } catch(Exception e){}
+								leftMotor.setSpeed(100);
+								rightMotor.setSpeed(100);
+								leftMotor.forward();
+								rightMotor.forward();
+								movesAfterWall ++;
+								if(movesAfterWall == 10){
+									movesAfterWall = 0;
+									avoidedWall = false;
+								}
+							}else{
+								if(Math.abs(thetaError) > 80){
+									leftMotor.setSpeed(50);
+									rightMotor.setSpeed(50);
+									leftMotor.rotate(-convertAngle(leftRadius, width, thetaError), true);
+									rightMotor.rotate(convertAngle(rightRadius, width, thetaError), false);
+								}
+								if(meToFinish +5< blockToFinish){
+									//Sound.buzz();
+									leftMotor.setSpeed(70);
+									rightMotor.setSpeed(180);
+									leftMotor.forward();
+									rightMotor.forward();
+								}else{
+									//Sound.beep();
+									leftMotor.setSpeed(110);
+									rightMotor.setSpeed(110);
+									leftMotor.forward();
+									rightMotor.forward();
+								}
+								
+							}
+							
+						}
+						//otherwise, if not on track, get back on track 
+						
+						if (Math.abs(odo.getX() - finalPos.getX()) < 0.5 && Math.abs(odo.getY() - finalPos.getY()) < 0.5){
+							leftMotor.stop();
+							rightMotor.stop();
+							reachedPoint = true;
+						}
+						//leftMotor.rotate(convertDistance(leftRadius, hypotenuse/INCREMENTS), true);
+					//rightMotor.rotate(convertDistance(rightRadius, hypotenuse/INCREMENTS), false);
+					}
+				
+				}

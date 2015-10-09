@@ -1,6 +1,4 @@
 
-
-
 import lejos.hardware.lcd.TextLCD;
 
 public class OdometryDisplay extends Thread {
@@ -8,12 +6,13 @@ public class OdometryDisplay extends Thread {
 	private Odometer odometer;
 	private TextLCD t;
 	private OdometryCorrection odometerCorrection;
-
+	private UltrasonicController cont;
 	// constructor
-	public OdometryDisplay(Odometer odometer, OdometryCorrection odometerCorrection, TextLCD t) {
+	public OdometryDisplay(Odometer odometer, OdometryCorrection odometerCorrection, TextLCD t, UltrasonicController cont) {
 		this.odometer = odometer;
 		this.odometerCorrection = odometerCorrection;
 		this.t = t;
+		this.cont = cont;
 	}
 
 	// run method (required for Thread)
@@ -31,7 +30,9 @@ public class OdometryDisplay extends Thread {
 			t.drawString("X:              ", 0, 0);
 			t.drawString("Y:              ", 0, 1);
 			t.drawString("T:              ", 0, 2);
-			t.drawString("C:              ", 0, 3);
+			t.drawString("M:              ", 0, 3);
+			t.drawString("B:              ", 0, 4);
+			t.drawString("D:              ", 0, 5);
 			// get the odometry information
 			odometer.getPosition(position, new boolean[] { true, true, true });
 			
@@ -40,8 +41,9 @@ public class OdometryDisplay extends Thread {
 				t.drawString(formattedDoubleToString(position[i], 2), 3, i);
 			}
 			//displays the brightness being read
-			t.drawString(formattedDoubleToString(odometerCorrection.getBrightness(),2),3, 3);
-			
+			t.drawString(formattedDoubleToString(cont.meToFinish(),2),3, 3);
+			t.drawString(formattedDoubleToString(cont.blockToFinish(),2),3,4);
+			t.drawString(formattedDoubleToString(cont.readUSDistance(),2), 3, 5);
 			// throttle the OdometryDisplay
 			displayEnd = System.currentTimeMillis();
 			if (displayEnd - displayStart < DISPLAY_PERIOD) {

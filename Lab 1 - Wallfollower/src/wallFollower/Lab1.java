@@ -1,6 +1,7 @@
 package wallFollower;
 
-//TEST COMMENT
+
+
 import lejos.hardware.sensor.*;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -14,22 +15,22 @@ import lejos.hardware.Button;
 // This is the main class for the wall follower.
 
 public class Lab1 {
-//hey
-// Parameters: adjust these for desired performance
 
-	private static final int bandCenter = 20;			// Offset from the wall (cm)
-	private static final int bandWidth = 3;				// Width of dead band (cm)
-	private static final int motorLow = 100;			// Speed of slower rotating wheel (deg/sec)
-	private static final int motorHigh = 200;			// Speed of the faster rotating wheel (deg/seec)
-	
+// Parameters (CONSTANTS): adjust these for desired performance
+
+	private static final int BANDCENTER = 30;			// Offset from the wall (cm)
+	private static final int BANDWIDTH = 3;				// Width of dead band (cm)
+	private static final int MOTORLOW = 125;			// Speed of slower rotating wheel (deg/sec)
+	private static final int MOTORHIGH = 250;			// Speed of the faster rotating wheel (deg/seec)
+	private static final int CLOSESTALLOWEDDISTANCE = 9;
 // Static Resources:
 //
 // Ultrasonic sensor connected to input port S1
-// Left motor connected to output A
-// Right motor connected to output B
+// Left motor connected to output C
+// Right motor connected to output D
 	
 	private static final Port usPort = LocalEV3.get().getPort("S1");
-	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	
 // Main entry point - instantiate objects used and set up sensor
@@ -42,10 +43,9 @@ public class Lab1 {
 			option = Button.waitForAnyPress();			// ID (option) determines what type of control to use
 		
 		// Setup controller objects
-		
 		BangBangController bangbang = new BangBangController(leftMotor, rightMotor,
-															 bandCenter, bandWidth, motorLow, motorHigh);
-		PController p = new PController(leftMotor, rightMotor, bandCenter, bandWidth);
+															 BANDCENTER, BANDWIDTH, MOTORLOW, MOTORHIGH, CLOSESTALLOWEDDISTANCE);
+		PController p = new PController(leftMotor, rightMotor, BANDCENTER, BANDWIDTH);
 		
 		// Setup ultrasonic sensor
 		// Note that the EV3 version of leJOS handles sensors a bit differently.

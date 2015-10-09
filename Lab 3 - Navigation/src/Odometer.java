@@ -11,8 +11,6 @@ public class Odometer extends Thread {
 	
 	public static int lastTachoL;// Tacho L at last sample 
 	public static int lastTachoR;// Tacho R at last sample
-
-	
 	public static int nowTachoL;// Current tacho L 
 	public static int nowTachoR;// Current tacho R
 	//robot physical information
@@ -172,7 +170,7 @@ public class Odometer extends Thread {
 				theta = position[2];
 		}
 	}
-
+	//setters
 	public void setX(double x) {
 		synchronized (lock) {
 			this.x = x;
