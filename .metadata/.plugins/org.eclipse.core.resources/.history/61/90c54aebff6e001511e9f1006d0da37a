@@ -1,0 +1,109 @@
+import lejos.hardware.Sound;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.robotics.SampleProvider;
+
+public class LightLocalizer {
+	public static int ROTATION_SPEED = 60;
+	public static int FORWARD_SPEED = 100;
+	
+	public static int ACCELERATION = 600;
+	private Odometer odo;
+	private SampleProvider colorSensor;
+	private float[] colorData;
+	private EV3LargeRegulatedMotor leftMotor, rightMotor;
+	private double[] angles;
+	private int angleIndex;
+	private double firstBrightness;
+	//the percent difference in our reading to consider it a different color (used for reading black)
+	private double significantPercentThreshold = 20;
+	private static int lightSensorDistance = 15;
+	
+	public LightLocalizer(Odometer odo, SampleProvider colorSensor, float[] colorData) {
+		this.odo = odo;
+		this.colorSensor = colorSensor;
+		this.colorData = colorData;
+		
+		EV3LargeRegulatedMotor[] motors = odo.getMotors();
+		this.leftMotor = motors[0];		
+		this.rightMotor = motors[1];
+		this.leftMotor.setAcceleration(ACCELERATION);
+		this.rightMotor.setAcceleration(ACCELERATION);
+		angles = new double[4];
+		angleIndex = 0;
+		
+		
+	}
+	
+	public void doLocalization() {
+		
+		firstBrightness = getColorData();
+		// drive to location listed in tutorial
+		// hmm. Drive straight until sensor hits? Then move back a bit? Do same for X and Y? do this last!!
+
+		//we assume we are at theta 0 to start...
+		//set the speeds of the motors
+		leftMotor.setSpeed(FORWARD_SPEED);
+		rightMotor.setSpeed(FORWARD_SPEED);
+		//go forward until we hit a black line (this will be the first y-vertical-line)
+		leftMotor.forward();
+		rightMotor.forward();
+		
+		while(100*Math.abs(getColorData() - firstBrightness)/firstBrightness > significantPercentThreshold){
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		leftMotor.stop(true);
+		rightMotor.stop(true);
+		
+
+		// start rotating and clock all 4 gridlines
+		// we just want to rotate 360 degrees. Each time we hit something, record it's angle...
+		leftMotor.setSpeed(ROTATION_SPEED);
+		rightMotor.setSpeed(ROTATION_SPEED);
+		leftMotor.backward();
+		rightMotor.forward();
+
+		
+		while(angleIndex < 4){
+			if(100*Math.abs(getColorData() - firstBrightness)/firstBrightness > significantPercentThreshold){ //getColorData() - firstBrightness > 10){
+				angles[angleIndex] = odo.getAng();
+				angleIndex+=1;
+				Sound.beep();
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		leftMotor.stop(true);
+		rightMotor.stop(true);
+		
+		//now we have our angles array. 
+		//0th element = first y line, 1st = first x point, 3rd = second y, 4th = second x
+		//calculate the deltas.
+		double deltaY = angles[2] - angles[0];
+		double deltaX = angles[3] - angles[1];
+		// do trig to compute (0,0) and 0 degrees
+		double xValue = (-1)*lightSensorDistance*Math.cos(Math.PI*deltaX/(2*180));
+		double yValue = (-1)*lightSensorDistance*Math.cos(Math.PI*deltaY/(2*180));
+
+		System.out.println("I was off in x and y by (" + xValue + ", " + yValue + ")");
+		// when done travel to (0,0) and turn to 0 degrees
+		
+	}
+	
+	private float getColorData() {
+		colorSensor.fetchSample(colorData, 0);
+		//we define the brightness as the average of the magnitudes of R,G,B (really "Whiteness")
+		float colorBrightnessLevel = (colorData[0] + colorData[1] + colorData[2]);
+		return colorBrightnessLevel;
+	}
+
+
+}

@@ -1,0 +1,66 @@
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.robotics.SampleProvider;
+
+public class LightLocalizer {
+	public static int ROTATION_SPEED = 60;
+	public static int ACCELERATION = 600;
+	private Odometer odo;
+	private SampleProvider colorSensor;
+	private float[] colorData;
+	private EV3LargeRegulatedMotor leftMotor, rightMotor;
+	private double[] angles;
+	private int angleIndex;
+	public LightLocalizer(Odometer odo, SampleProvider colorSensor, float[] colorData) {
+		this.odo = odo;
+		this.colorSensor = colorSensor;
+		this.colorData = colorData;
+		
+		EV3LargeRegulatedMotor[] motors = odo.getMotors();
+		this.leftMotor = motors[0];		
+		this.rightMotor = motors[1];
+		this.leftMotor.setAcceleration(ACCELERATION);
+		this.rightMotor.setAcceleration(ACCELERATION);
+		angles = new double[4];
+		angleIndex = 0;
+	}
+	
+	public void doLocalization() {
+		// drive to location listed in tutorial
+		// hmm. Drive straight until sensor hits? Then move back a bit? Do same for X and Y? do this last!!
+		
+		// start rotating and clock all 4 gridlines
+		// we just want to rotate 360 degrees. Each time we hit something, record it's angle...
+		leftMotor.setSpeed(ROTATION_SPEED);
+		rightMotor.setSpeed(ROTATION_SPEED);
+		leftMotor.backward();
+		rightMotor.forward();
+		
+		
+		// do trig to compute (0,0) and 0 degrees
+		
+		// when done travel to (0,0) and turn to 0 degrees
+		
+	}
+	
+	private float getFilteredData() {
+		usSensor.fetchSample(usData, 0);
+		float distance = (int)(usData[0]*100.0);
+		float result = 0;
+		if (distance > 50 && filterControl < FILTER_OUT) {
+			// bad value, do not set the distance var, however do increment the filter value
+			filterControl ++;
+			result = lastDistance;
+		} else if (distance > 50){
+			// true 255, therefore set distance to 255
+			result = 50; //clips it at 50
+		} else {
+			// distance went below 255, therefore reset everything.
+			filterControl = 0;
+			result = distance;
+		}
+		lastDistance = distance;
+		return result;
+	}
+
+
+}
