@@ -1,3 +1,11 @@
+/*
+ * LCDInfo.java
+ * Alessandro Commodari and Asher Wright
+ * ECSE 211 DPM Lab 4 - Localization
+ * Group 53
+ * This class controls the text that is displayed on the LCD screen. 
+ * Taken from MyCourses.
+ */
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 import lejos.robotics.SampleProvider;
@@ -25,8 +33,12 @@ public class LCDInfo implements TimerListener{
 		// start the timer
 		lcdTimer.start();
 	}
-	
-	public void timedOut() { 
+	/*
+	 * (non-Javadoc)
+	 * @see lejos.utility.TimerListener#timedOut()
+	 * Prints the info on the LCD.
+	 */
+	public void timedOut() {
 		odo.getPosition(pos);
 		LCD.clear();
 		LCD.drawString("X: ", 0, 0);
@@ -38,6 +50,9 @@ public class LCDInfo implements TimerListener{
 		LCD.drawString(String.valueOf(pos[2]), 3, 2);
 		LCD.drawString(String.valueOf(getFilteredData()), 3, 3);
 	}
+	/*
+	 * Gets the data from the Ultrasonic sensor.
+	 */
 	private float getFilteredData() {
 		usSensor.fetchSample(usData, 0);
 		float distance = (int) (usData[0]*100.0);

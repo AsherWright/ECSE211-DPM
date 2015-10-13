@@ -1,11 +1,21 @@
+/*
+ * USLocalizer.java
+ * Alessandro Commodari and Asher Wright
+ * ECSE 211 DPM Lab 4 - Localization
+ * Group 53
+ * Given that the robot is in the first block, uses the ultrasonic sensor to find the angle
+ * it started off facing.
+ */
 import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.SampleProvider;
 
 public class USLocalizer {
 	public enum LocalizationType { FALLING_EDGE, RISING_EDGE };
+	//constants
 	public static int ROTATION_SPEED = 100;
 	public static int ACCELERATION = 600;
+	//class variables
 	private Odometer odo;
 	private SampleProvider usSensor;
 	private float[] usData;
@@ -19,6 +29,7 @@ public class USLocalizer {
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 	
 	public USLocalizer(Odometer odo,  SampleProvider usSensor, float[] usData, LocalizationType locType) {
+		//get incoming values
 		this.odo = odo;
 		this.usSensor = usSensor;
 		this.usData = usData;
@@ -88,11 +99,12 @@ public class USLocalizer {
 			//System.out.println("B:" + angleB);
 			//System.out.println("Average" + averageAngle);
 			//System.out.println("To Turn" + (FortyFiveDegPastNorth + 45));
-			//rotate to the diagonal
+			//rotate to the diagonal + 45 (to the horizontal x axis)
 			leftMotor.rotate(convertAngle(Lab4.WHEEL_RADIUS, Lab4.TRACK, ZeroPoint), true);
 			rightMotor.rotate(-convertAngle(Lab4.WHEEL_RADIUS, Lab4.TRACK, ZeroPoint), false);
 			
-			// update the odometer position (example to follow:)
+			// update the odometer position to 0 0 0 (that's how we are facing. Position (x and y) will
+			//be wrong but that will be fixed by the LightLocalizer
 			odo.setPosition(new double [] {0.0, 0.0, 0}, new boolean [] {true, true, true});
 		} else {
 			/*
@@ -131,10 +143,11 @@ public class USLocalizer {
 			rightMotor.stop(true);
 			angleB = odo.getAng();
 			
+			//if our angle A is bigger than B, subtract 360.
 			if(angleA > angleB){
 				angleA = angleA - 360;
 			}
-
+			//calculate the average angle andd the zero point (zeropoint is x axis)
 			double averageAngle = (angleA + angleB)/2;
 			double ZeroPoint =  angleB - averageAngle + 45;
 
@@ -143,12 +156,13 @@ public class USLocalizer {
 			//double averageAngle = (angleA + angleB)/2;
 			//double FortyFiveDegPastNorth =  angleB - averageAngle;
 			//Sound.beep();
-			//rotate to the diagonal
+			//rotate to the diagonal + 45 (to the x axis).
 			leftMotor.rotate(convertAngle(Lab4.WHEEL_RADIUS, Lab4.TRACK, ZeroPoint), true);
 			rightMotor.rotate(-convertAngle(Lab4.WHEEL_RADIUS, Lab4.TRACK, ZeroPoint), false);
 			
-			// update the odometer position (example to follow:)
-			odo.setPosition(new double [] {0.0, 0.0, -135}, new boolean [] {true, true, true});
+			// update the odometer position to 0 0 0. The x and y will be wrong
+			// but that will be fixed by the LightLocalizer
+			odo.setPosition(new double [] {0.0, 0.0, 0}, new boolean [] {true, true, true});
 		}
 	}
 

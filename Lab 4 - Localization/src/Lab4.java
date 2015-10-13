@@ -1,3 +1,11 @@
+/*
+ * Lab4.java
+ * Alessandro Commodari and Asher Wright
+ * ECSE 211 DPM Lab 4 - Localization
+ * Group 53
+ * This class sets up the classes for the localizations, and calls them. It also initializes the sensors
+ * and the motors.
+ */
 import lejos.hardware.*;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -46,17 +54,18 @@ public class Lab4 {
 		Navigation navi = new Navigation(odo);
 		
 		// perform the ultrasonic localization
-		int buttonPressed = Button.waitForAnyPress();
-		if(buttonPressed == Button.ID_LEFT){
-			USLocalizer usl = new USLocalizer(odo, usValue, usData, USLocalizer.LocalizationType.FALLING_EDGE);
-			usl.doLocalization();
-		}else if(buttonPressed == Button.ID_RIGHT){
+		//int buttonPressed = Button.waitForAnyPress();
+		//if(buttonPressed == Button.ID_LEFT){
+		//Falling edge was found to be the best! So we use that one.
+		USLocalizer usl = new USLocalizer(odo, usValue, usData, USLocalizer.LocalizationType.FALLING_EDGE);
+		usl.doLocalization();
+		/*}else if(buttonPressed == Button.ID_RIGHT){
 			USLocalizer usl = new USLocalizer(odo, usValue, usData, USLocalizer.LocalizationType.RISING_EDGE);
 			usl.doLocalization();
 		}else{
 			USLocalizer usl = new USLocalizer(odo, usValue, usData, USLocalizer.LocalizationType.RISING_EDGE);
 			usl.doLocalization();
-		}
+		}*/
 			
 		
 		// perform the light sensor localization

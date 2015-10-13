@@ -1,56 +1,67 @@
+/*
+ * LightLocalizer.java
+ * Alessandro Commodari and Asher Wright
+ * ECSE 211 DPM Lab 4 - Localization
+ * Group 53
+ * Given that the robot is facing 0 degrees in the first block,
+ * uses the color sensor to localize the robot by reading black lines while spinnning around.
+ */
 import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.SampleProvider;
 
 public class LightLocalizer {
+	//constants
 	public static int ROTATION_SPEED = 60;
 	public static int FORWARD_SPEED = 100;
 	public static int DISTANCE_FROM_EDGE = 18;
 	public static int ACCELERATION = 600;
+	private static double significantPercentThreshold = 20; 	//the percent difference in our reading to consider it a different color (used for reading black)
+	private static int lightSensorDistance = 15;
+	//class variables
 	private Odometer odo;
 	private SampleProvider colorSensor;
 	private float[] colorData;
-	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 	private double[] angles;
 	private double[] odoAngles;
 	private int angleIndex;
 	private double firstBrightness;
-	//the percent difference in our reading to consider it a different color (used for reading black)
-	private double significantPercentThreshold = 20;
-	private static int lightSensorDistance = 15;
-	Navigation navi;
+	//motors
+	private EV3LargeRegulatedMotor leftMotor, rightMotor;
+	Navigation navi; //the navigation class
 	
 	public LightLocalizer(Odometer odo, SampleProvider colorSensor, float[] colorData, Navigation navi) {
+		//get incoming values for variables
 		this.odo = odo;
 		this.colorSensor = colorSensor;
 		this.colorData = colorData;
-		
+		this.navi = navi;
+		//set up motors
 		EV3LargeRegulatedMotor[] motors = odo.getMotors();
 		this.leftMotor = motors[0];		
 		this.rightMotor = motors[1];
 		this.leftMotor.setAcceleration(ACCELERATION);
 		this.rightMotor.setAcceleration(ACCELERATION);
+		//initialize arrays
 		angles = new double[4];
 		odoAngles = new double[4];
 		angleIndex = 0;
-		this.navi = navi;
-		
 	}
-	
+	/*
+	 * Localizes the robot (using the light sensor)
+	 */
 	public void doLocalization() {
-		
+		//gets the first brightness (so it knows what to base color readings everything off of)
 		firstBrightness = getColorData();
-		// drive to location listed in tutorial
-		// hmm. Drive straight until sensor hits? Then move back a bit? Do same for X and Y? do this last!!
 
 		//we assume we are at theta 0 to start...
 		//set the speeds of the motors
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
-		//go forward until we hit a black line (this will be the first y-vertical-line)
 		leftMotor.forward();
 		rightMotor.forward();
 		
+		//until we reach a black line go forward ((this will be the first y-vertical-line))
 		while(100*Math.abs(getColorData() - firstBrightness)/firstBrightness < significantPercentThreshold){
 			try {
 				Thread.sleep(100);
@@ -59,9 +70,10 @@ public class LightLocalizer {
 				e.printStackTrace();
 			}
 		}
+		// now that we've reached a black line, stop.
 		leftMotor.stop(true);
 		rightMotor.stop(true);
-		//now go backwards a little bit.
+		//now go backwards a set amount
 		leftMotor.rotate(-convertDistance(Lab4.WHEEL_RADIUS, DISTANCE_FROM_EDGE), true); //two tiles = 60.96
 		rightMotor.rotate(-convertDistance(Lab4.WHEEL_RADIUS, DISTANCE_FROM_EDGE), false);
 		
@@ -77,10 +89,10 @@ public class LightLocalizer {
 		//set the speeds of the motors
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
-		//go forward until we hit a black line (this will be the first x-horizontal-line)
 		leftMotor.forward();
 		rightMotor.forward();
 		
+		//go forward until we hit a black line (this will be the first x-horizontal-line)
 		while(100*Math.abs(getColorData() - firstBrightness)/firstBrightness < significantPercentThreshold){
 			try {
 				Thread.sleep(100);
@@ -89,13 +101,12 @@ public class LightLocalizer {
 				e.printStackTrace();
 			}
 		}
+		//now stop the robot
 		leftMotor.stop(true);
 		rightMotor.stop(true);
 		//now go backwards a little bit.
 		leftMotor.rotate(-convertDistance(Lab4.WHEEL_RADIUS, DISTANCE_FROM_EDGE), true); //two tiles = 60.96
 		rightMotor.rotate(-convertDistance(Lab4.WHEEL_RADIUS, DISTANCE_FROM_EDGE), false);
-		
-		
 		
 		// start rotating and clock all 4 gridlines
 		// we just want to rotate 360 degrees. Each time we hit something, record it's angle...
@@ -104,8 +115,14 @@ public class LightLocalizer {
 		leftMotor.backward();
 		rightMotor.forward();
 
-		
+		//now we want to read the four angles for our spin (we store them in an array)
+		/*
+		 * While we still haven't read four black lines, spin around.
+		 */
 		while(angleIndex < 4){
+			/*
+			 * Upon reaching a black line, beep and record it.
+			 */
 			if(100*Math.abs(getColorData() - firstBrightness)/firstBrightness > significantPercentThreshold){ //getColorData() - firstBrightness > 10){
 				angles[angleIndex] = odo.getAng();
 				angleIndex+=1;
@@ -118,10 +135,10 @@ public class LightLocalizer {
 				}
 			}
 		}
+		//now stop the motors (we have out angle values)
 		leftMotor.stop(true);
 		rightMotor.stop(true);
-		
-		//now we have our angles array. 
+	
 		//0th element = first y line, 1st = first x point, 3rd = second y, 4th = second x
 		//calculate the deltas.
 		double deltaY = angles[2] - angles[0];
@@ -130,10 +147,10 @@ public class LightLocalizer {
 		double xValue = (-1)*lightSensorDistance*Math.cos(Math.PI*deltaX/(2*180));
 		double yValue = (-1)*lightSensorDistance*Math.cos(Math.PI*deltaY/(2*180));
 		double thetaYMinus = angles[0];
-		
 		double deltaTheta = +180 - deltaY/2 - thetaYMinus;
-		System.out.println("Delta theta: " + deltaTheta);
-		System.out.println("my theta: " + odo.getAng());
+		
+		//System.out.println("Delta theta: " + deltaTheta);
+		//System.out.println("my theta: " + odo.getAng());
 		/*double currTheta = odo.getAng();
 		double newTheta = currTheta + deltaTheta;
 		if(newTheta >= 360){
@@ -144,22 +161,27 @@ public class LightLocalizer {
 		//turn this deltaTheta...
 		navi.turnTo(currTheta + deltaTheta, true);
 		*/
+		//turn to 0 now that we have adjusted correctly
 		navi.turnTo(0, true); //navi.turnTo(deltaTheta, true);
+		
 		//System.out.println("I was off in x and y by (" + xValue + ", " + yValue + ")");
+		//set the position of the robot to where we are and an angle of 0.
 		odo.setPosition(new double [] {xValue, yValue, 0}, new boolean [] {true, true, true});
-		Sound.buzz();
+		//Sound.buzz();
+		//now travel to 0,0 and turn to 0 (we are done!)
 		navi.travelTo(0, 0);
 		navi.turnTo(0, true);
-		// when done travel to (0,0) and turn to 0 degrees
 		
 	}
+	//conversion methods
 	private static int convertAngle(double radius, double width, double angle) {
 		return convertDistance(radius, Math.PI * width * angle / 360.0);
 	}
-	//Conversion methods.
 	private static int convertDistance(double radius, double distance) {
 		return (int) ((180.0 * distance) / (Math.PI * radius));
 	}
+	// gets the data from the color sensor, and returns a value corresponding
+	// to the overall "brightness".
 	private float getColorData() {
 		colorSensor.fetchSample(colorData, 0);
 		//we define the brightness as the average of the magnitudes of R,G,B (really "Whiteness")
