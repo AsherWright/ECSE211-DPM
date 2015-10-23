@@ -2,22 +2,24 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="private EV3LargeRegulatedMotor leftMotor, rightMotor;" key="selection"/>
+		<item value=".rotate" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value=".rotate"/>
+			<item value="getFilteredData"/>
+			<item value="50"/>
+			<item value="t."/>
 			<item value=".setposi"/>
 			<item value=".set"/>
 			<item value="setposi"/>
 			<item value="setpositi"/>
-			<item value="setposit"/>
-			<item value=".stop"/>
-			<item value="system.out"/>
-			<item value="navigation"/>
 		</list>
 		<list key="replacehistory">
+			<item value="LCD."/>
+			<item value=""/>
 			<item value="allowedError"/>
 			<item value="SENSORDIST"/>
 		</list>

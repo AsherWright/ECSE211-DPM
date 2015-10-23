@@ -13,7 +13,7 @@ import lejos.robotics.SampleProvider;
 public class USLocalizer {
 	public enum LocalizationType { FALLING_EDGE, RISING_EDGE };
 	//constants
-	public static int ROTATION_SPEED = 100;
+	public static int ROTATION_SPEED = 60;
 	public static int ACCELERATION = 600;
 	//class variables
 	private Odometer odo;
@@ -43,7 +43,10 @@ public class USLocalizer {
 		filterControl = 0;
 		lastDistance = 100;
 	}
-	
+	/*
+	 * Uses the Ultrasonic sensor to perform a "localization", where it figures out its initial
+	 * starting angle and turns to face along the x-axis.
+	 */
 	public void doLocalization() {
 		double [] pos = new double [3];
 		double angleA, angleB;
@@ -118,13 +121,12 @@ public class USLocalizer {
 				leftMotor.backward();
 				rightMotor.forward();
 			}
-			//Sound.beep();
 			// keep rotating until the robot no longer sees the wall, then latch the angle
 			while(getFilteredData() < WALL_DIST){
 				leftMotor.backward();
 				rightMotor.forward();
 			}
-			//Sound.beep();
+
 			angleA = odo.getAng();
 			
 			//switch directions and rotate until the robot sees the wall.
@@ -132,13 +134,12 @@ public class USLocalizer {
 				leftMotor.forward();
 				rightMotor.backward();
 			}
-			//Sound.beep();
+
 			// rotate until the robot no longer sees the wall and latch the angle.
 			while(getFilteredData() < WALL_DIST){
 				leftMotor.forward();
 				rightMotor.backward();
 			}
-			//Sound.beep();
 			leftMotor.stop(true);
 			rightMotor.stop(true);
 			angleB = odo.getAng();
