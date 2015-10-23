@@ -73,7 +73,6 @@ public class Lab5 {
 
 		/*
 		 * We wait for a press. If it is a left button, we're just doing the detection
-		 * otherwise we do the block stuff.
 		 */
 		int buttonPressed = Button.waitForAnyPress();
 		if(buttonPressed == Button.ID_LEFT){

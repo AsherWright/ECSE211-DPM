@@ -65,26 +65,26 @@ public class Driver extends Thread {
 			 * if we see a block, move towards it
 			 * if we do not see a block, turn.
 			 */
-			if(USDistance < 5){
+			if(USDistance < 4){
 				leftMotor.stop(true);
 				rightMotor.stop(true);
 				break;
 			}else if(USDistance <22 && haveAdjustedClose == false){
 				//this turns a set amount
-				leftMotor.rotate(80,true);
-				rightMotor.rotate(-80,false);
+				leftMotor.rotate(70);
+				rightMotor.rotate(-70);
 				Sound.buzz();
 				//we've made the adjustment
 				haveAdjustedClose = true;
 		
 				
-			}else if(USDistance < 80){
+			}else if(USDistance < 90){
 				//move forward
 				leftMotor.setSpeed(FORWARDSPEED);
 				rightMotor.setSpeed(FORWARDSPEED);
 				leftMotor.forward();
 				rightMotor.forward();
-			}else if(USDistance > 80){
+			}else if(USDistance > 90){
 				//spin
 				leftMotor.setSpeed(ROTATESPEED);
 				rightMotor.setSpeed(ROTATESPEED);
@@ -94,12 +94,7 @@ public class Driver extends Thread {
 			
 		}
 		//We should wait before reading the detector (so it settles)
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Thread.sleep(100);
 		/*
 		 * Check to see what we are reading for an object.
 		 * we beep once for a block and twice for the wooden block.

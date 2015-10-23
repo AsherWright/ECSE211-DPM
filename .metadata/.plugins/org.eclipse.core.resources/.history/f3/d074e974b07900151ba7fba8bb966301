@@ -79,7 +79,7 @@ public class BlockDetector extends Thread {
 				isReadingBlock = true;
 			}else{
 				blockType = "NOT BLOCK";
-				isReadingBlock = false;
+				isReadingBlock = true;
 			}
 			//now sleep so that we don't call this too often.
 			try {

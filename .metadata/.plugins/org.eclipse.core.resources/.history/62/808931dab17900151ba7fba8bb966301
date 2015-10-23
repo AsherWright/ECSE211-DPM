@@ -72,7 +72,7 @@ public class Driver extends Thread {
 			}else if(USDistance <22 && haveAdjustedClose == false){
 				//this turns a set amount
 				leftMotor.rotate(80,true);
-				rightMotor.rotate(-80,false);
+				rightMotor.rotate(-70,false);
 				Sound.buzz();
 				//we've made the adjustment
 				haveAdjustedClose = true;

@@ -73,12 +73,11 @@ public class Lab5 {
 
 		/*
 		 * We wait for a press. If it is a left button, we're just doing the detection
-		 * otherwise we do the block stuff.
 		 */
 		int buttonPressed = Button.waitForAnyPress();
 		if(buttonPressed == Button.ID_LEFT){
 			
-		}else{ 
+		}else{
 			// perform the ultrasonic localization
 			//Rising edge was found to be the best in this case! So we use that one.
 			USLocalizer usl = new USLocalizer(odo, usValue, usData, USLocalizer.LocalizationType.RISING_EDGE);
