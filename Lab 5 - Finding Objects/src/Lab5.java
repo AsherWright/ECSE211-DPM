@@ -1,9 +1,9 @@
 /*
- * Lab4.java
+ * Lab5.java
  * Alessandro Commodari and Asher Wright
- * ECSE 211 DPM Lab 4 - Localization
+ * ECSE 211 DPM Lab 5 - Finding Objects
  * Group 53
- * This class sets up the classes for the localizations, and calls them. It also initializes the sensors
+ * This class sets up the classes for Finding the objects, and calls them. It also initializes the sensors
  * and the motors.
  */
 import lejos.hardware.*;
@@ -22,11 +22,13 @@ public class Lab5 {
 	// Color sensor port connected to input S2
 	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+	//the two arm motors for capturing the block
 	private static final EV3LargeRegulatedMotor armMotor1 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
 	private static final EV3LargeRegulatedMotor armMotor2 = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
-	
+	//sensor ports
 	private static final Port usPort = LocalEV3.get().getPort("S1");		
 	private static final Port colorPort = LocalEV3.get().getPort("S2");		
+	//robot dimension constants
 	public static final double WHEEL_RADIUS = 2.1;
 	public static final double TRACK = 16.2; //.27
 	
@@ -51,30 +53,32 @@ public class Lab5 {
 		SampleProvider colorValue = colorSensor.getMode("RGB");// .getMode("Red");			// colorValue provides samples from this instance
 		float[] colorData = new float[colorValue.sampleSize()];			// colorData is the buffer in which data are returned
 		
-		// perform the light sensor localization
+		// start the block detector thread, which will be constantly checking with the light sensor
+		//to see if there is a block.
 		BlockDetector blockDetector = new BlockDetector(colorValue, colorData);
 		blockDetector.start();	
 		
-		// setup the odometer and display
+		// setup the odometer
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true);
-		boolean[] update= new boolean[3];
+		//this commented out code is used if we are testing robot and do not want to localize
+		/*boolean[] update= new boolean[3];
 		update[0] = false; update[1] = false; update[2] = true;
 		double[] pos = new double[3];
 		pos[0] = 0; pos[1] = 0; pos[2] = 90;
-		odo.setPosition(pos,update);
-		//LCDInfo lcd = new LCDInfo(odo, usValue, usData);
+		odo.setPosition(pos,update);*/
+		
+		//set up the display and navigator
 		LCDDisplay lcd = new LCDDisplay(odo, blockDetector, usValue, usData);
 		Navigation navi = new Navigation(odo);
 
 		// perform the ultrasonic localization
-		//int buttonPressed = Button.waitForAnyPress();
-		//if(buttonPressed == Button.ID_LEFT){
-		//Falling edge was found to be the best! So we use that one.
+		//Rising edge was found to be the best in this case! So we use that one.
 		USLocalizer usl = new USLocalizer(odo, usValue, usData, USLocalizer.LocalizationType.RISING_EDGE);
-		//usl.doLocalization();
+		usl.doLocalization();
 			
+		// setup and start our driver. This is what looks for blocks.
 		Driver drive = new Driver(leftMotor, rightMotor, armMotor1, armMotor2, odo, blockDetector, usValue, usData, navi);
-		//drive.start();
+		drive.start();
 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);	

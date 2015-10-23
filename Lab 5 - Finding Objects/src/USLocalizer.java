@@ -1,10 +1,10 @@
 /*
  * USLocalizer.java
  * Alessandro Commodari and Asher Wright
- * ECSE 211 DPM Lab 4 - Localization
+ * ECSE 211 DPM Lab 5 - Finding objects
  * Group 53
  * Given that the robot is in the first block, uses the ultrasonic sensor to find the angle
- * it started off facing.
+ * it started off facing. Then faces 90 degrees
  */
 import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -176,19 +176,26 @@ public class USLocalizer {
 	private static int convertAngle(double radius, double width, double angle) {
 		return convertDistance(radius, Math.PI * width * angle / 360.0);
 	}
+	/*
+	 * gets the filtered US data from the US sensor.
+	 */
 	private float getFilteredData() {
 		usSensor.fetchSample(usData, 0);
 		float distance = (int)(usData[0]*100.0);
 		float result = 0;
-		if (distance > 200){
+		if (distance > 50 && filterControl < FILTER_OUT) {
+			// bad value, do not set the distance var, however do increment the filter value
+			filterControl ++;
+			result = lastDistance;
+		} else if (distance > 50){
 			// true 255, therefore set distance to 255
-			result = 200; //clips it at 50
+			result = 50; //clips it at 50
 		} else {
 			// distance went below 255, therefore reset everything.
 			filterControl = 0;
 			result = distance;
 		}
-		//lastDistance = distance;
+		lastDistance = distance;
 		return result;
 	}
 
