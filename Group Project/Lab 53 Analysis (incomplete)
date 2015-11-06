@@ -1,0 +1,7 @@
+I have not got around to do this yet...
+
+1: Wall follower - our P-controller was beautiful. 
+2: Odometery - terrible, we used the TA's code (given) in the end
+3: Object avoidance - terrible, ""
+4: Localization: Alright...
+5: Finding objects: not the best. Simple algorithm that rarely works. Block detection was OK.
