@@ -118,4 +118,29 @@ public class Navigation {
 		this.travelTo(Math.cos(Math.toRadians(this.odometer.getAng())) * distance, Math.cos(Math.toRadians(this.odometer.getAng())) * distance);
 
 	}
+	//from Ming
+	public void rotate(int leftspeed, int rightspeed) {
+
+		leftMotor.setAcceleration(2000);
+		rightMotor.setAcceleration(2000);
+		leftMotor.setSpeed(Math.abs(leftspeed));
+		rightMotor.setSpeed(Math.abs(rightspeed));
+		if (leftspeed < 0)
+			leftMotor.backward();
+		else
+			leftMotor.forward();
+		if (rightspeed < 0)
+			rightMotor.backward();
+		else
+			rightMotor.forward();
+	}
+	/**
+	 * Stops both motors immediately
+	 */
+	public void stopMotor() {
+
+		leftMotor.setSpeed(0);
+		rightMotor.setSpeed(0);
+		try {	Thread.sleep(100);	} catch (InterruptedException e) {}
+	}
 }

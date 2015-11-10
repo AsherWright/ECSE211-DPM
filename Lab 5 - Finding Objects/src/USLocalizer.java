@@ -28,6 +28,9 @@ public class USLocalizer {
 	//Motors (we will get these from the odometer)
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 	
+	/**
+	 * 
+	 */
 	public USLocalizer(Odometer odo,  SampleProvider usSensor, float[] usData, LocalizationType locType) {
 		//get incoming values
 		this.odo = odo;

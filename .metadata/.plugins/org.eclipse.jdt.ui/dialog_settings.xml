@@ -49,6 +49,58 @@
 		<item value="600" key="width"/>
 		<item value="400" key="height"/>
 	</section>
+	<section name="javadoc">
+		<item value="private" key="access"/>
+		<item value="false" key="noindex"/>
+		<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Project/javadoc.xml" key="antpath"/>
+		<item value="false" key="nodeprecatedlist"/>
+		<item value="true" key="use"/>
+		<item value="true" key="author"/>
+		<item value="false" key="nodeprecated"/>
+		<item value="false" key="nonavbar"/>
+		<item value="" key="docletpath"/>
+		<item value="/Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home/bin/javadoc" key="javadoc_command_history"/>
+		<item value="1.7" key="source"/>
+		<item value="true" key="version"/>
+		<item value="" key="docletname"/>
+		<item value="true" key="splitindex"/>
+		<item value="true" key="fromStandard"/>
+		<item value="false" key="notree"/>
+		<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Project/doc" key="destdir"/>
+		<item value="false" key="openinbrowser"/>
+		<section name="projects">
+			<section name="Project">
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Project/javadoc.xml" key="antpath"/>
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Project/doc" key="destdir"/>
+				<item value="" key="href"/>
+			</section>
+			<section name="Lab 2 - Odometry">
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Lab 2 - Odometry/javadoc.xml" key="antpath"/>
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Lab 2 - Odometry/doc" key="destdir"/>
+				<item value="" key="href"/>
+			</section>
+			<section name="Lab 4 - Localization">
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Lab 4 - Localization/javadoc.xml" key="antpath"/>
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Lab 4 - Localization/doc" key="destdir"/>
+				<item value="" key="href"/>
+			</section>
+			<section name="Lab 5 - Finding Objects">
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Lab 5 - Finding Objects/javadoc.xml" key="antpath"/>
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Lab 5 - Finding Objects/doc" key="destdir"/>
+				<item value="" key="href"/>
+			</section>
+			<section name="Lab 1 - Wallfollower">
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Lab 1 - Wallfollower/javadoc.xml" key="antpath"/>
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Lab 1 - Wallfollower/doc" key="destdir"/>
+				<item value="" key="href"/>
+			</section>
+			<section name="Lab 3 - Navigation">
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Lab 3 - Navigation/javadoc.xml" key="antpath"/>
+				<item value="/Users/AsherW/Documents/McGill/Fall 2015/ECSE 211/ECSE211-DPM/Lab 3 - Navigation/doc" key="destdir"/>
+				<item value="" key="href"/>
+			</section>
+		</section>
+	</section>
 	<section name="SourceActionDialog.methods">
 		<item value="false" key="SynchronizedModifier"/>
 		<item value="false" key="Comments"/>
@@ -61,6 +113,13 @@
 	</section>
 	<section name="NewPackageWizardPage">
 		<item value="false" key="create_package_info_java"/>
+	</section>
+	<section name="JavadocWizardDialog">
+		<item value="600" key="DIALOG_WIDTH"/>
+		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
+		<item value="534" key="DIALOG_HEIGHT"/>
+		<item value="418" key="DIALOG_X_ORIGIN"/>
+		<item value="83" key="DIALOG_Y_ORIGIN"/>
 	</section>
 	<section name="completion_proposal_size">
 	</section>

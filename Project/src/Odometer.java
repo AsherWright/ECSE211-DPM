@@ -46,9 +46,9 @@ public class Odometer implements TimerListener {
 		this.rightMotor = rightMotor;
 		
 		// default values, modify for your robot
-		this.rightRadius = Lab5.WHEEL_RADIUS;
-		this.leftRadius = Lab5.WHEEL_RADIUS;
-		this.width = Lab5.TRACK;
+		this.rightRadius = Controller.WHEEL_RADIUS;
+		this.leftRadius = Controller.WHEEL_RADIUS;
+		this.width = Controller.TRACK;
 		
 		this.x = 0.0;
 		this.y = 0.0;
@@ -139,7 +139,11 @@ public class Odometer implements TimerListener {
 				theta = position[2];
 		}
 	}
-
+	public void setTheta(double angle){
+		synchronized(this){
+			theta = angle;
+		}
+	}
 	// return x,y,theta
 	public void getPosition(double[] position) {
 		synchronized (this) {

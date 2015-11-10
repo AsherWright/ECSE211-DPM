@@ -7,7 +7,7 @@
 <fullyQualifiedTypeName name="lejos.hardware.sensor.EV3ColorSensor"/>
 <fullyQualifiedTypeName name="lejos.hardware.sensor.SensorMode"/>
 <fullyQualifiedTypeName name="lejos.robotics.Color"/>
-<fullyQualifiedTypeName name="lejos.hardware.sensor.EV3UltrasonicSensor"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="lejos.hardware.Sound"/>
+<fullyQualifiedTypeName name="lejos.hardware.sensor.EV3UltrasonicSensor"/>
 </qualifiedTypeNameHistroy>

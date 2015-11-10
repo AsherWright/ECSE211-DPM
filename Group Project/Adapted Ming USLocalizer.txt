@@ -1,0 +1,174 @@
+import lejos.hardware.Sound;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorModes;
+import lejos.robotics.SampleProvider;
+
+/*
+ * USLocalizer.java
+ * Team 5
+ * DPM - Fall 2011
+ */
+
+public class USLocalizer {
+		public enum LocalizationType { FALLING_EDGE, RISING_EDGE };
+
+		private final int ROTATESPEED = 80;
+		private Odometer odo;
+//		private UltrasonicSensor us;
+		private SensorModes usSensor;
+		float[] usData;
+		private LocalizationType locType;
+		private static double angle,angleA, angleB;
+		public static int minDistance=255;
+		Navigation nav;
+
+	
+	/**
+	 * The default constructor
+	 * 
+	 * @param odo The robot's odometer
+	 * @param us The robot's left ultrasonic sensor
+	 */
+	public USLocalizer(Odometer odo, SensorModes usSensor2, float[] usData, Navigation navi) {
+		this.odo = odo;
+//		this.us = us1;
+//		this.nav = new Navigation(odo,us1,us2,t);
+		this.nav = navi;
+		// switch off the ultrasonic sensor
+//		us.off();
+		this.usSensor = usSensor2;
+		this.usData = usData;
+	}
+	
+	/**
+	 * Localizes the robot using the ultrasonic sensor. Clocks the angle at which the sensor detects each wall and calculates 0 degrees
+	 */
+	public void doLocalization() {
+		
+		
+		angleA=0;
+		angleB=0;
+		double UCdistance;
+		int expmtDistance;
+		expmtDistance = 38;
+		int count=0;
+		boolean facingToWall=true;
+		
+			// rotate the robot until it sees no wall
+			nav.rotate(ROTATESPEED,-ROTATESPEED);
+			facingToWall = true;
+			
+			while(facingToWall)
+			{
+				UCdistance = getFilteredData();
+				if(UCdistance>expmtDistance)
+				{
+					count++;
+				}
+				if(UCdistance>expmtDistance&&count>=3)
+				{
+					facingToWall = false;
+					count=0;
+					}
+			}	
+			
+			
+			sleep(3000);
+			
+			// keep rotating until the robot sees a wall, then latch the angle
+			while(!facingToWall)
+			{
+				UCdistance = getFilteredData();	
+				if(UCdistance<expmtDistance)
+				{
+					count++;
+				}
+				
+				if(UCdistance<expmtDistance&&count>=3)
+				{
+					facingToWall = true;
+					angleA = odo.getAng();
+					Sound.beep();
+					nav.stopMotor();
+					count=0;
+					}
+			}	
+
+
+			// switch direction and wait until it sees no wall
+		    nav.rotate(-ROTATESPEED,ROTATESPEED);
+			while(facingToWall)
+			{
+				UCdistance = getFilteredData();	
+				
+				if(UCdistance>expmtDistance)
+				{
+					count++;
+				}
+				
+				if(UCdistance>expmtDistance&&count>=3)
+				{
+					facingToWall = false;
+					count=0;
+				}
+			}	
+			
+			
+			// keep rotating until the robot sees a wall, then latch the angle
+			sleep(3000);
+			
+			while(!facingToWall)
+			{
+				UCdistance = getFilteredData();		
+				if(UCdistance<expmtDistance)
+				{
+					count++;
+				}
+				
+				if(UCdistance<expmtDistance&&count>=3)
+				{
+					facingToWall = true;
+					angleB = odo.getAng();
+					Sound.beep();
+					nav.stopMotor();
+					}
+			}	
+
+			// angleA is clockwise from angleB, so assume the average of the
+			// angles to the right of angleB is 45 degrees past 'north'
+			// we slightly correct the angle '45' to '44' based on the error we measured
+			angle = 45 - (angleA - angleB)/2;
+			
+			// update the odometer position (example to follow:)
+			odo.setTheta(angle);
+			nav.turnTo(0, true);
+
+
+		 
+	}
+	
+	private float getFilteredData() {
+		usSensor.fetchSample(usData, 0);
+		float distance = (int)(usData[0]*100.0);
+		return distance;
+	}
+	
+	
+	/**
+	 * Thread sleeps for a specified time
+	 * 
+	 * @param time The time the thread will sleep (in ms)
+	 */
+	private void sleep(int time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+		}
+	}
+
+
+	
+
+
+
+}
