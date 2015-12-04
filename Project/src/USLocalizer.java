@@ -9,7 +9,7 @@ import lejos.robotics.SampleProvider;
  */
 public class USLocalizer {
 
-	private enum LocalizationType { FALLING_EDGE, RISING_EDGE };
+	public enum LocalizationType { FALLING_EDGE, RISING_EDGE };
 	/**
 	 * The speed at which the robot rotates when performing the localization
 	 */
